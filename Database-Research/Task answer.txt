@@ -164,3 +164,71 @@ Studies the business requirements and understands what the organization needs fr
 -Uses BI tools (Power BI, Tableau, SSIS, SSRS, etc.) to transform raw data into insights.
 
 -Helps businesses understand trends, performance, and opportunities.
+
+_________________________________________________________________________________________
+
+Types of Databases
+
+1. Relational vs Non-Relational Databases
+
+Relational Databases (RDBMS)
+-Store data in structured tables (rows and columns).
+-Use SQL for querying.
+-Support relationships using primary keys and foreign keys.
+-Best for structured, consistent, and transactional data.
+
+Examples: MySQL, PostgreSQL, Oracle, SQL Server.
+Use cases: Banking systems, e-commerce, hospital systems, inventory management.
+
+-Non-Relational Databases (NoSQL)
+-Designed for flexible, unstructured, or semi-structured data.
+-Do not rely on fixed tables.
+-More scalable for large and rapidly changing datasets.
+-Types include document stores, key-value stores, wide-column stores, and graph databases.
+
+Examples:
+-MongoDB → Document database (stores data in JSON-like documents).
+-Cassandra → Wide-column database (highly scalable and good for large workloads).
+
+Use cases: Social media apps, IoT platforms, recommendation systems, real-time analytics.
+
+2. Centralized vs Distributed vs Cloud Databases
+
+Centralized Database
+-All data stored in a single location/server.
+-Easier to manage and secure but can become a bottleneck.
+-If the central server fails, the entire system is affected.
+
+Use cases: Small companies, school systems, simple internal applications.
+
+Distributed Database
+-Data is stored across multiple locations or servers.
+-Servers may be in different geographic areas.
+-Offers better performance, availability, and fault tolerance.
+-Can be harder to manage due to synchronization.
+
+Use cases: Large organizations, multinational companies, telecom systems, global applications.
+
+Cloud Database
+-Hosted on cloud platforms (AWS, Azure, Google Cloud).
+-Scalable, flexible, pay-as-you-go model.
+-No need to manage hardware.
+-Allows remote access and automatic backups.
+
+Examples: Amazon RDS, Google Firestore, Azure SQL Database.
+Use cases: Modern web apps, mobile apps, startups, AI/ML platforms.
+
+
+3. Use Case Examples (Summary)
+
+Relational: Banking systems, ERP, HR systems, ticketing systems.
+
+Non-Relational: Social networks, real-time chat apps, sensor data, large analytics systems.
+
+Centralized: School database, clinic system, small business inventory.
+
+Distributed: Worldwide e-commerce (Amazon), telecom billing, online streaming services.
+
+Cloud: Mobile apps with global users, SaaS platforms, scalable online services.
+
+__________________________________________________________________________________________________
