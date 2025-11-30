@@ -1,0 +1,101 @@
+Comparison Between Flat File Systems and Relational Databases
+
+1. Structure
+
+Flat File Systems
+
+Store data in a single file or simple files like TXT, CSV, or spreadsheets.
+
+Data is arranged in lines or rows without enforced structure.
+
+No concept of tables, schemas, or data types.
+
+All information is kept together, making the format simple but limited.
+
+Relational Databases
+
+Organize data into multiple structured tables with rows and columns.
+
+Each table has a defined schema (data types, constraints, rules).
+
+Support indexing, keys, and efficient data retrieval.
+
+Provide a well-organized and controlled environment for storing complex datasets.
+
+2. Data Redundancy
+
+Flat File Systems
+
+High redundancy because the same data must be repeated in multiple entries.
+
+Leads to larger file sizes and more storage usage.
+
+Increases risk of inconsistent data when updates are not applied everywhere.
+
+Relational Databases
+
+Low redundancy due to normalization (splitting data into related tables).
+
+Shared data is stored once and referenced using keys.
+
+Easier to maintain accuracy and consistency across the system.
+
+3. Relationships
+
+Flat File Systems
+
+Cannot naturally represent complex relationships between data.
+
+All data is stored linearly, making linking records difficult.
+
+Relationships must be manually managed, increasing errors.
+
+Relational Databases
+
+Designed to handle relationships using primary keys and foreign keys.
+
+Support one-to-one, one-to-many, and many-to-many relationships.
+
+Maintain data integrity automatically through constraints.
+
+4. Example Usage
+
+Flat File Systems
+
+Used for small or simple datasets.
+
+Common in configuration files, logs, simple contact lists, and basic data exchange.
+
+Suitable when the dataset does not require complex queries.
+
+Relational Databases
+
+Used in large, structured, and multi-user applications.
+
+Examples: hospital systems, banking systems, e-commerce platforms, reservation systems.
+
+Ideal for environments requiring high accuracy, quick searches, and secure storage.
+
+5. Drawbacks
+
+Flat File Systems
+
+Difficult to manage as data grows.
+
+Lack security, access control, and multi-user support.
+
+Poor performance for complex queries or large datasets.
+
+Any structural change requires editing the entire file.
+
+Relational Databases
+
+Require more resources (hardware and software).
+
+Need skilled administrators and careful design.
+
+More costly to set up and maintain than flat files.
+
+Less suitable for extremely large unstructured data.
+_______________________________________________________________________________________________________
+
