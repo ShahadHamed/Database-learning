@@ -305,3 +305,45 @@ Cloud databases combine the benefits of traditional databases with the flexibili
 * Moving existing databases to the cloud can take time and require special tools.
 
 ________________________________________________________________________________________________________________
+
+### **1. What is a Database Engine?**
+
+A **database engine** is the core component of a database management system (DBMS) that handles data storage, retrieval, and manipulation. It processes queries, manages transactions, maintains data integrity, handles indexing for faster searches, and enforces security. Essentially, it is the “heart” of the database that performs all operations on the data.
+
+---
+
+### **2. Examples of Database Engines**
+
+* **SQL Server (Microsoft):** A relational database engine used for enterprise applications.
+* **MySQL:** An open-source relational engine commonly used for web applications.
+* **Oracle Database:** A commercial relational engine, widely used in large organizations.
+* **PostgreSQL:** An open-source relational engine known for advanced features and strong standards compliance.
+
+Other examples include SQLite, MariaDB, and IBM Db2.
+
+---
+
+### **3. Languages Used by Database Engines**
+
+Database engines use query languages to communicate and manipulate data. Examples include:
+
+* **SQL Server:** Uses **T-SQL (Transact-SQL)**, which extends standard SQL with procedural programming, error handling, and engine-specific features.
+* **MySQL:** Uses **SQL**, mostly following the ANSI SQL standard with some proprietary extensions.
+* **Oracle:** Uses **PL/SQL**, a procedural language built on top of SQL that supports loops, conditions, and exception handling.
+* **PostgreSQL:** Uses **PL/pgSQL**, similar to PL/SQL, for writing custom functions and complex logic.
+
+**ANSI SQL** is the standard language for relational databases and is supported in all engines for basic queries such as SELECT, INSERT, UPDATE, and DELETE.
+
+---
+
+### **4. Relationship Between Engine and Language**
+
+Each database engine is designed to work with certain query languages. While all relational engines support standard SQL, they often provide **proprietary extensions or procedural languages** to leverage engine-specific features. For example, T-SQL is specific to SQL Server, while PL/SQL is specific to Oracle.
+
+---
+
+### **5. Can One Language Work Across Different Engines?**
+
+Standard SQL can generally work across multiple relational engines for basic operations. However, **proprietary extensions** (like T-SQL or PL/SQL) usually do not work on other engines without modification. Tools like ORMs or database abstraction layers can help write queries that are more portable, but advanced engine-specific features are often not transferable.
+
+_______________________________________________________________________________________________
