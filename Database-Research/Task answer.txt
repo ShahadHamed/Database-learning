@@ -99,3 +99,68 @@ More costly to set up and maintain than flat files.
 Less suitable for extremely large unstructured data.
 _______________________________________________________________________________________________________
 
+Roles in a Database System
+
+1. System Analyst
+
+Studies the business requirements and understands what the organization needs from the database system.
+
+-Communicates with stakeholders, users, and managers to gather requirements.
+
+-Creates system specifications, workflow diagrams, and functional requirements.
+
+-Ensures that the database system will support the organization’s goals and solve the intended problems.
+
+2. Database Designer
+
+-Translates the system requirements into a logical and physical database design.
+
+-Defines tables, relationships, constraints, keys, and data flows.
+
+-Ensures the database structure is efficient, normalized, and able to handle current and future needs.
+
+-Works closely with analysts and developers to ensure correct implementation.
+
+3. Database Developer
+
+-Implements the database design by creating tables, views, triggers, functions, stored procedures, and queries.
+
+-Writes SQL code to manage data operations.
+
+-Optimizes database performance by improving queries and indexing.
+
+-Ensures the database supports application requirements.
+
+4. DBA (Database Administrator)
+
+-Responsible for day-to-day database operations and management.
+
+-Installs, configures, and upgrades database software.
+
+-Manages backup and recovery, security permissions, user accounts, and performance tuning.
+
+-Monitors the database to ensure high availability and reliability.
+
+-Handles troubleshooting, maintenance, and disaster recovery planning.
+
+5. Application Developer
+
+-Builds the front-end or back-end applications that interact with the database.
+
+-Uses programming languages (such as Java, C#, Python, or web frameworks) to create user interfaces and logic.
+
+-Sends queries to the database using APIs or ORM tools.
+
+-Ensures the application retrieves, displays, updates, and processes data correctly.
+
+6. BI (Business Intelligence) Developer
+
+-Creates dashboards, reports, and analytical tools to help organizations make data-driven decisions.
+
+-Works with data warehouses, ETL processes, and analytical databases.
+
+-Designs data models for reporting and forecasting.
+
+-Uses BI tools (Power BI, Tableau, SSIS, SSRS, etc.) to transform raw data into insights.
+
+-Helps businesses understand trends, performance, and opportunities.
