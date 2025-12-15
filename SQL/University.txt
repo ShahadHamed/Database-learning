@@ -1,0 +1,314 @@
+Create database  University
+Use  University
+
+--DDL
+create table Student (
+       S_id int primary key, 
+	   F_name nvarchar(50) not null,
+       L_name nvarchar(50) not null,
+	   Phone_no int,
+	   DOB date
+)
+
+create table Department (
+       Department_id int primary key identity(1,1), 
+	   D_name nvarchar(50) not null
+)
+
+create table Faculty (
+       F_id int primary key, 
+	   FName varchar(50) not null,
+	   Mobile_no int,
+	   Department nvarchar(50),
+	   Salary int
+)
+
+create table Fac_student(
+       S_id int,
+	   F_id int,
+	   foreign key (S_id) references Student(S_id),
+	   foreign key (F_id) references Faculty(F_id),
+	   primary key (S_id,F_id)
+)
+
+create table Couese (
+       Course_id int primary key identity(10,1),
+	   Course_name nvarchar(50),
+	   Duration int
+)
+
+create table Dep_course (
+       Department_id int,
+	   Course_id int,
+	   foreign key (Department_id) references Department(Department_id),
+	   foreign key (Course_id) references Couese(Course_id),
+	   primary key (Department_id,Course_id)
+)
+ 
+create table Stud_course (
+       S_id int,
+	   Course_id int,
+	   foreign key (S_id) references Student(S_id),
+	   foreign key (Course_id) references Couese(Course_id),
+	   primary key (S_id,Course_id)
+)
+
+create table Hostel ( 
+        Hostel_id int primary key identity(1,1),
+		Hostel_name nvarchar(50),
+		City nvarchar(50),
+		States nvarchar(50),
+		H_address nvarchar(100),
+        Pin_code int,
+		No_of_seat int,
+)
+
+create table Subjects (
+       Subject_id int primary key identity(20,1),
+	   Subject_name nvarchar(50),
+	   F_id int,
+	   foreign key (F_id) references Faculty(F_id),
+)
+
+create table Stud_subject (
+       S_id int,
+	   Subject_id int,
+	   foreign key (S_id) references Student(S_id),
+	   foreign key (Subject_id) references Subjects(Subject_id),
+	   primary key (S_id,Subject_id)
+)
+
+create table Exams (
+       Exam_code int primary key,
+	   EDate date,
+	   ETime time,
+	   Room varchar(20),
+	   Department_id int,
+	   foreign key (Department_id) references Department(Department_id)
+)
+
+create table Stud_exams (
+       S_id int,
+	   Exam_code int,
+	   foreign key (S_id) references Student(S_id),
+	   foreign key (Exam_code) references Exams(Exam_code),
+	   primary key (S_id,Exam_code)
+)
+
+alter table Student
+	add Department_id int foreign key references Department(Department_id) --TO ADD extra FK
+
+ alter table Student
+	add  Hostel_id int foreign key references Hostel(Hostel_id)
+
+alter table Student
+    add GPA decimal(3,3)
+
+alter table Student
+      alter column GPA decimal (3,2)
+
+alter table Student
+    add Enrollment_date date
+
+alter table Student
+    add current_status varchar(20)
+
+-- to see the final table
+select * from Student 
+select * from Faculty
+select * from Fac_student
+select * from Hostel
+select * from Couese 
+select * from Stud_course
+select * from Subjects
+select * from Stud_subject
+select * from Exams
+select * from Stud_exams
+select * from Department
+select * from Dep_course
+
+--DML 
+Insert into Department (D_name) 
+                VALUES ('Computer Science'),
+                       ('Engineering'),
+                       ('Business'),
+                       ('Medicine'),
+                       ('Arts');
+
+INSERT INTO Hostel (Hostel_name, City, States, H_address, Pin_code, No_of_seat) 
+            VALUES ('Al Noor Hostel', 'Muscat', 'Oman', 'Ruwi Street', 1001, 120),
+                   ('Al Amal Hostel', 'Muscat', 'Oman', 'AlKoudh Road', 1002, 100),
+                   ('Al Salam Hostel', 'Muscat', 'Oman', 'Bawshar Center', 1003, 80),
+                   ('Al Falah Hostel', 'Muscat', 'Oman', 'Seeb Street', 1004, 90),
+                   ('Al Bayan Hostel', 'Muscat', 'Oman', 'Al Khuwair Road', 1005, 70);
+
+Insert into Student (S_id, F_name, L_name, Phone_no, DOB, Department_id, Hostel_id) 
+             VALUES (106, 'Shahad', 'Hamad', 96961121, '2000-01-18', 1, 15),
+                    (107, 'Fatma', 'Said', 91231232, '2001-03-12', 2,12),
+                    (108, 'Ali', 'Salem', 91230003, '1999-07-22', 3,11),
+                    (109, 'Aisha', 'Omar', 92557458, '2002-01-18', 4,13),
+                    (110, 'Maryam', 'Ahmed', 96385274, '2000-11-30', 5,14);
+
+UPDATE Student
+       SET GPA = 3.06, Enrollment_date = '2023-09-01', current_status= 'Graduate'
+       WHERE S_id = 106;
+
+UPDATE Student
+       SET GPA = 3.20, Enrollment_date = '2026-09-01', current_status= 'Active'
+       WHERE S_id = 107;
+
+UPDATE Student
+       SET GPA = 2.80, Enrollment_date = '2020-09-01', current_status= 'Graduate'
+       WHERE S_id = 108;
+
+UPDATE Student
+       SET GPA = 3.70, Enrollment_date = '2019-01-15', current_status= 'Graduate'
+       WHERE S_id = 109;
+
+UPDATE Student
+       SET GPA = 3.50, Enrollment_date = '2021-02-10', current_status= 'Graduate'
+       WHERE S_id = 110;
+
+
+Insert into Faculty (F_id, FName, Mobile_no, Department, Salary) 
+            VALUES (222, 'Ahmed Ali', 96991212, 'Computer Science', 1200),
+                   (233, 'Sara Said', 91234502, 'Engineering', 1300),
+                   (333, 'Mohammed Omar', 98771495, 'Business', 1100),
+                   (424, 'Fatma Noor', 91001414, 'Medicine', 1500),
+                   (521, 'Ali Hassan', 78884414, 'Arts', 1000);
+
+Insert into Fac_student (S_id, F_id) 
+                 VALUES (106, 222),
+                        (107, 521),
+                        (108, 424),
+                        (109, 233),
+                        (110, 333);
+
+Insert into Couese (Course_name, Duration)
+            VALUES ('Database Systems', 2),
+                   ('Networks', 3),
+                   ('Biosenser', 4),
+                   ('Anatomy', 5),
+                   ('Fiber optic', 5);
+ 
+ Insert into Dep_course (Department_id, Course_id) 
+                 VALUES (1, 10),
+                        (2, 11),
+                        (3, 12),
+                        (4, 13),
+                        (5, 14);
+
+Insert into Stud_course (S_id, Course_id) 
+                 VALUES (106, 10),
+                        (107, 11),
+                        (108, 12),
+                        (109, 13),
+                        (110, 14);
+
+Insert into Subjects (Subject_name, F_id)
+              VALUES ('SQL', 222),
+                     ('Networking Lab', 233),
+                     ('Biosensor Lab', 333),
+                     ('Human Anatomy', 521),
+                     ('Fiber Optics', 424);
+
+Insert into Stud_subject (S_id, Subject_id) 
+                  VALUES (110, 20),
+                         (106, 21),
+                         (107, 22),
+                         (109, 23),
+                         (108, 24);
+
+Insert into Exams (Exam_code, EDate, ETime, Room, Department_id) 
+           VALUES (501, '2026-01-09', '09:00', 'A101', 1),
+                  (502, '2026-01-11', '10:00', 'PC201', 2),
+                  (503, '2026-01-14', '11:00', 'L301', 3),
+                  (504, '2026-01-15', '12:00', 'D401', 4),
+                  (505, '2025-12-24', '13:00', 'A501', 5);
+
+Insert into Stud_exams (S_id, Exam_code) 
+                VALUES (106, 501),
+                       (107, 502),
+                       (108, 503),
+                       (109, 504),
+                       (110, 505);
+
+-- DQL 
+--1. Display all student records.
+select * from Student
+
+--2. Display each student's full name, enrollment date, and current status
+SELECT F_name + ' ' + L_name AS Full_Name, Enrollment_date, current_status from Student
+
+
+--3. Display each course title and credits.
+SELECT Course_name, Duration
+FROM Couese;
+
+--4. Display each student’s full name and GPA as GPA Score
+SELECT F_name + ' ' + L_name AS Full_Name, GPA AS GPA_Score from Student
+
+--5. List student IDs and names of students with GPA greater than 3.5
+SELECT S_id, F_name + ' ' + L_name AS Full_Name from Student
+WHERE GPA > 3.5;
+
+--6. List students who enrolled before 2022
+SELECT F_name + ' ' + L_name AS Full_Name, Enrollment_date from Student
+WHERE Enrollment_date < '2022-01-01';
+
+--7. Display students with GPA between 3.0 and 3.5
+SELECT F_name + ' ' + L_name AS Full_Name, GPA from Student
+WHERE GPA BETWEEN 3.0 AND 3.5;
+
+--8. Display students ordered by GPA descending
+SELECT F_name + ' ' + L_name AS Full_Name, GPA from Student
+ORDER BY GPA DESC;
+
+--9. Display the maximum, minimum, and average GPA
+SELECT MAX(GPA) AS Max_GPA, MIN(GPA) AS Min_GPA, AVG(GPA) AS Avg_GPA from Student
+
+--10. Display total number of students
+SELECT COUNT(*) AS Total_Students from Student
+
+--11. Display students whose names end with 'a'
+SELECT F_name + ' ' + L_name AS Full_Name from Student
+WHERE F_name LIKE '%a'
+
+--12. Display students with NULL advisor
+--we do not have advisor
+
+--13. Display students enrolled in 2021
+SELECT F_name + ' ' + L_name AS Full_Name, Enrollment_date from Student
+WHERE YEAR(Enrollment_date) = 2021
+
+--DML
+--14.Insert yourself as a new student
+Insert into Student (S_id, F_name, L_name, Department_id, Hostel_id, GPA, Enrollment_date, current_status)
+             VALUES (122, 'Shima', 'Mohammed', 2, 12, 2.45, '2026-09-01', 'Active')
+
+--15. Insert another student (friend) with GPA and advisor NULL
+Insert into Student (S_id, F_name, L_name, Department_id, Hostel_id, GPA, Enrollment_date, current_status)
+             VALUES (119, 'Yaqeen', 'Abdullah', 4, 11, 3.72, '2020-08-18', 'Graduate')
+
+--16. Increase your GPA by 0.2
+UPDATE Student
+   SET GPA = GPA + 0.2
+   WHERE S_id = 106
+
+--17.Set GPA to 2.0 for students with GPA below 2.0
+UPDATE Student
+    SET GPA = 2.0
+    WHERE GPA < 2.0;
+
+--18.Increase GPA by 0.1 for students enrolled before 2020
+UPDATE Student
+   SET GPA = GPA + 0.1
+   WHERE Enrollment_date < '2020-01-01';
+
+--19.Delete students with status 'Inactive'
+DELETE FROM Student
+    WHERE current_status = 'Inactive';
+
+
+
+
