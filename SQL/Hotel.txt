@@ -1,0 +1,171 @@
+Create database Hotel 
+Use Hotel
+
+--DLL
+create table Branches ( 
+      branch_id int primary key identity(1,1),
+      branch_name VARCHAR(100) NOT NULL,
+      locations VARCHAR(100) NOT NULL
+)
+
+create table Staff (
+      staff_id int primary key,
+      branch_id int NOT NULL,
+      s_name varchar(20) NOT NULL,
+      job_title varchar(50),
+      salary decimal(10,2),
+      foreign key (branch_id) references Branches(branch_id)
+)
+
+create table Rooms (
+      room_no int primary key identity(100,1),
+      branch_id int NOT NULL,
+      room_type varchar(50),
+      nightly_rate decimal(10,2),
+      room_availability bit default 1,
+      foreign key (branch_id) references Branches(branch_id)
+)
+
+create table Customer (
+      customer_id int primary key,
+	  c_name varchar(20) NOT NULL,
+	  phone int,
+	  email varchar(100)
+)
+
+create table Booking (
+      b_id int primary key identity(220,1), 
+	  customer_id int,
+	  check_in DateTime NOT NULL,
+      check_out DateTime NOT NULL,
+      foreign key (customer_id) references Customer(customer_id)
+)
+
+create table Room_Book (
+      room_no int,
+      b_id int,
+	  foreign key (room_no) references Rooms(room_no),
+	  foreign key (b_id) references Booking(b_id),
+	  primary key (room_no,b_id)
+)
+
+create table Staff_Book (
+      staff_id int,
+      b_id int,
+	  foreign key (staff_id) references Staff (staff_id),
+	  foreign key (b_id) references Booking(b_id),
+	  primary key (staff_id,b_id)
+)
+
+-- to see the final table
+select * from Branches
+select * from Staff
+select * from Rooms
+select * from Customer
+select * from Booking
+select * from Room_Book
+select * from Staff_Book
+
+--DML
+Insert into branches (branch_name, locations)
+              values ('Muscat central branch', 'Muscat'),
+                     ('Al khuwair branch', 'Muscat'),
+					 ('Sea View Branch', 'Sohar')
+
+Insert into staff (staff_id, branch_id, s_name, job_title, salary)
+           values (1187, 4, 'Ahmed salim', 'Manager', 2500.00),
+                  (2274, 5, 'Fatima ali', 'Receptionist', 600.00),
+                  (3334, 5, 'khalid nasser', 'Housekeeping', 325.00)
+
+Insert  into rooms (branch_id, room_type, nightly_rate, room_availability)
+            values (4, 'single', 100.00, 10),
+                   (5, 'double', 150.00, 6),
+                   (6, 'suite', 550.00, 2)
+
+Insert into customer (customer_id, c_name, phone, email)
+              values (201, 'salim rashid', 91234567, 'salim@gmail.com'),
+                     (202, 'Aisha mohamed', 92345678, 'aisha@gmail.com'),
+					 (203, 'Mohammed zaher', 96962212, 'mohammed18@gmail.com')
+
+Insert into booking (customer_id, check_in, check_out)
+             values (201, '2025-03-10 14:00:00', '2025-03-14 12:00:00'),
+                    (202, '2025-04-01 15:00:00', '2025-04-06 11:00:00'),
+					(203, '2025-09-15 18:30:00', '2025-09-21 11:00:00')
+
+Insert into room_book (room_no, b_id)
+               values (100, 220),
+                      (101, 221)
+
+Insert into staff_book (staff_id, b_id)
+                 values(1187, 220),
+                       (2274, 221)
+
+--DQL
+--1. display all guest records
+select * from customer
+
+--2. Display each guest’s name, contact number, and proof ID type.
+select c_name, phone
+   from customer
+
+--3. Display all bookings with booking date, status, and total cost.
+select b_id, check_in, check_out
+   from booking
+
+--4. Display each room number and its price per night as NightlyRate
+select room_no, nightly_rate as nightlyrate
+   from rooms
+
+--5. list rooms priced above 1000 per night
+select * from rooms
+  where nightly_rate > 1000
+
+--6. Display staff members working as 'Receptionist'.
+select * from staff
+  where job_title = 'receptionist'
+
+--7. Display bookings made in 2024
+select * from booking
+  where year(check_in) = 2024
+
+--8. Display bookings ordered by total cost descending.
+select * from Rooms
+  order by nightly_rate desc
+
+--9.Display the maximum, minimum, and average room price.
+Select MAX(nightly_rate) AS MaxPrice,
+       MIN(nightly_rate) AS MinPrice,
+	   AVG(nightly_rate) AS AvgPrice
+     From Rooms
+
+--10. Display total number of rooms.
+Select count (*) AS total_no_room 
+    From Rooms
+
+--11. Display guests whose names start with 'M'.
+select * from customer
+  where c_name like 'm%'
+
+--12. Display rooms priced between 150 and 1500
+select * from 
+  where nightly_rate between 150 and 1500
+
+--DML
+--13. Insert yourself as a guest (Guest ID = 9011).
+Insert into customer (customer_id, c_name, phone, email)
+              values (9011, 'Shahad Hamed',96961121, 'shahad.gmail@com')
+
+--14. Create a booking for room 205.
+Insert into booking (customer_id, check_in, check_out)
+             values (9011, '2025-12-01 14:00:00', '2025-12-05 12:00:00')
+
+--15. Insert another guest with NULL contact and proof details.
+Insert into customer (customer_id, c_name, phone, email)
+              values (9012, 'unknown guest', null, null)
+
+--17. Increase room prices by 10% for luxury rooms
+update rooms
+   set nightly_rate = nightly_rate * 1.10
+   where room_type = 'suite'
+
+
