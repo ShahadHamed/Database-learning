@@ -1,0 +1,191 @@
+create database BankSystem
+Use BankSystem
+
+--DDL
+
+create table Branches (
+    branch_id int primary key identity(1,1),
+    b_address varchar(200),
+    phone_number int
+)
+
+create table Employees (
+    e_id int primary key,
+    branch_id int,
+    e_name varchar(50),
+    position varchar(50),
+    Foreign key (branch_id) references Branches(branch_id)
+)
+
+create table Customers (
+    c_id int primary key,
+    c_name varchar(50),
+    c_address varchar(200),
+    BOD date
+)
+
+create table Emp_Cust (
+    e_id int,
+    c_id int,
+    processing_loans char(1), --Y or N
+    opening_accounts char(1), --Y or N
+    primary key (e_id, c_id),
+    Foreign key (e_id) references Employees(e_id),
+    Foreign key (c_id) references Customers(c_id)
+)
+
+create table Loans (
+    l_id int primary key identity(100,5),
+    e_id int,
+    c_id int,
+    l_type varchar(50),
+    amount decimal(12,2),
+    issue_date date,
+    Foreign key (e_id) references Employees(e_id),
+    Foreign key (c_id) references Customers(c_id)
+)
+
+create table Account (
+    account_no int primary key,
+    c_id int,
+    balance decimal(12,2),
+    DOC date,
+    account_type varchar(20),  -- savings / checking
+    Foreign key (c_id) references Customers(c_id)
+)
+
+create table Transactions (
+    transaction_id int primary key,
+    account_no int,
+    amount decimal(12,2),
+    date date,
+    transaction_type varchar(20),  -- transfer / withdrawal / deposit
+    foreign key (account_no) references Account(account_no)
+)
+
+-- to see the final table
+select * from branches
+select * from employees
+select * from customers
+select * from emp_cust
+select * from loans
+select * from account
+select * from transactions
+
+--DML
+use banksystem;
+
+Insert into branches (b_address, phone_number)
+               values('muscat main street', '96885965'),
+                     ('sohar city center', '92112121')
+
+Insert into employees (e_id, branch_id, e_name, position) 
+               values (1, 1, 'Ahmed Al maqbali', 'manager'),
+                      (2, 1, 'Fatma Al lawati', 'teller'),
+                      (3, 2, 'Salim Al suwaiqi', 'manager'),
+                      (4, 2, 'Layla Al balushi', 'teller')
+
+Insert into customers (c_id, c_name, c_address, bod) 
+               values (1, 'Ali saeed', 'muscat old town', '1998-03-12'),
+                      (2, 'Shima hassan', 'sohar beach road', '1992-07-25'),
+                      (3, 'khalid mohammed', 'muscat al qurum', '2000-11-05'),
+                      (4, 'Mohammed abdullah', 'sohar industrial area', '1985-01-18')
+
+Insert into emp_cust (e_id, c_id, processing_loans, opening_accounts) 
+               values(1, 1, 'y', 'y'),
+                     (2, 3, 'n', 'y'),
+                     (3, 2, 'y', 'y'),
+                     (4, 4, 'n', 'y')
+
+Insert into loans (e_id, c_id, l_type, amount, issue_date) 
+            values(1, 1, 'personal', 10000.00, '2025-03-01'),
+                  (3, 2, 'car', 20000.00, '2025-04-10')
+
+Insert into account (account_no, c_id, balance, doc, account_type) 
+             values (2001, 1, 5000.00, '2025-03-01', 'savings'),
+                    (2002, 2, 7000.00, '2025-04-10', 'checking'),
+                    (2003, 3, 3000.00, '2025-03-05', 'savings'),
+                    (2004, 4, 10000.00, '2025-04-15', 'checking')
+
+Insert into transactions (transaction_id, account_no, amount, date, transaction_type) 
+                   values(1, 2001, 1000.00, '2025-03-02', 'deposit'),
+                         (2, 2002, 500.00, '2025-04-11', 'withdrawal'),
+                         (3, 2003, 1500.00, '2025-03-06', 'deposit'),
+                         (4, 2004, 2000.00, '2025-04-16', 'deposit')
+
+use banksystem;
+
+-- DQL
+
+-- 1. Display all customer records
+select * from customers
+
+-- 2. Display customer full name, phone, and membership start date
+
+
+-- 3. Display each loan ID, amount, and type
+select l_id, amount, l_type from loans
+
+-- 4. Display account number and annual interest (5% of balance) as AnnualInterest
+select account_no, balance * 0.05 as annualinterest from account
+
+-- 5. List customers with loan amounts greater than 100000
+
+
+-- 6. List accounts with balances above 20000
+select * from account
+  where balance > 20000
+
+-- 7. Display accounts opened in 2023
+select * from account
+  where year(doc) = 2023
+
+-- 8. Display accounts ordered by balance descending
+select * from account
+   order by balance desc
+
+-- 9. Display the maximum, minimum, and average account balance
+select max(balance) as max_balance, 
+       min(balance) as min_balance, 
+	   avg(balance) as avg_balance
+   from account
+
+-- 10. Display total number of customers
+select count(*) as total_customers from customers
+
+-- 11. Display customers with NULL phone numbers
+
+
+-- 12. Display loans with duration greater than 10 years (assuming duration column exists)
+select * from loans
+   where datediff(year, issue_date, getdate()) > 10
+
+-- DML
+
+-- 13. Insert yourself as a new customer and open an account with balance 10000
+Insert into customers (c_id, c_name, c_address, bod) 
+               values (5, 'your name', 'your address', '1990-01-01')
+
+Insert into account (account_no, c_id, balance, doc, account_type) 
+             values (3001, 5, 10000, getdate(), 'savings')
+
+-- 14. Insert another customer with NULL phone and address
+Insert into customers (c_id, c_name, c_address, bod) 
+               values (6, 'test customer', null, '1995-05-05')
+
+-- 15. Increase your account balance by 20%
+update account
+   set balance = balance * 1.2
+    where c_id = 5
+
+-- 16. Increase balance by 5% for accounts with balance less than 5000
+update account
+   set balance = balance * 1.05
+   where balance < 5000
+
+-- 17. Update phone number to 'Not Provided' where phone is NULL
+
+
+-- 18. Delete closed accounts (assuming closed accounts have balance = 0)
+delete from account
+  where balance = 0
