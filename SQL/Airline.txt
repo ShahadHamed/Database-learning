@@ -1,0 +1,200 @@
+create database Airline
+use Airline
+
+--DDL
+create table Airport (
+       Airport_code varchar(10) primary key, 
+	   A_name nvarchar(50) not null,
+	   States nvarchar(50),
+	   City nvarchar(50)
+)
+
+create table Flight(
+       Flight_no int primary key identity(10,1),
+	   Airline nvarchar(50) not null,
+	   Weekdays nvarchar(20),
+	   Restrictions nvarchar(100) 
+)
+
+create table Fare(
+       Flight_no int,
+	   code varchar (10),
+	   Amount int,
+	   foreign key (Flight_no) references Flight(Flight_no),
+	   primary key (Flight_no)
+)
+
+create table Flight_leg(
+       leg_no int primary key identity(1,1),
+	   Schedulaed_dep_time time,
+	   Schedulaed_arr_time time,
+	   Airport_code varchar(10),
+	   Flight_no int,
+	   foreign key (Airport_code) references Airport(Airport_code),
+	   foreign key (Flight_no) references Flight(Flight_no)
+)
+
+alter table Flight_leg                                 -- to change datatypes 
+      alter column Schedulaed_dep_time DateTime
+
+alter table Flight_leg                                 -- to change datatypes 
+      alter column Schedulaed_arr_time DateTime
+
+create table Airplane_type(
+       Type_no int primary key, 
+	   Airport_code varchar(10),
+	   TypeName varchar(50),
+	   company varchar(50),
+	   Max_seats int,
+	   foreign key (Airport_code) references Airport(Airport_code)
+)
+
+create table Airplane(
+       Airplane_id int primary key identity(100,2),
+	   Type_no int,
+	   Total_no_seats int,
+	   foreign key (Type_no) references Airplane_type(Type_no)
+)
+
+create table leg_instance(
+       leg_id int primary key, 
+	   leg_no int,
+	   Airplane_id int,
+	   Arrival_time time,
+	   Departure_time time,
+	   No_available_seats int,
+	   foreign key (leg_no) references Flight_leg(leg_no),
+	   foreign key (Airplane_id) references Airplane(Airplane_id)
+)
+
+alter table leg_instance     --add column 
+      add leg_Date Date
+
+create table Reservation(
+       Custumar_id int primary key, 
+	   leg_id int,
+	   Cus_Name nvarchar(50),
+	   phone int,
+	   foreign key (leg_id) references leg_instance( leg_id)
+)
+
+-- to see the final table
+select * from Airport
+select * from Flight
+select * from Fare
+select * from Flight_leg
+select * from Airplane_type 
+select * from Airplane
+select * from leg_instance
+select * from Reservation
+
+--DML
+Insert into Airport (airport_code, A_name, states, city) 
+             VALUES ('MCT01' , 'Muscat International', 'Muscat', 'Muscat'),
+			        ('DXB11', 'Dubai International', 'Dubai', 'Dubai'),
+                    ('AUH12', 'Abu Dhabi International', 'Abu Dhabi', 'Abu Dhabi')
+
+Insert into Flight ( airline, weekdays, restrictions) 
+            VALUES ('Oman Air', 'Sun-Mon-Wed', 'None'),
+                   ('Emirates', 'Daily', 'No refund');
+
+Insert into Flight_Leg (flight_no, airport_code, schedulaed_dep_time, schedulaed_arr_time)
+                VALUES (10 , 'MCT01' , '2025-01-10 08:05', '2025-01-10 09:10'),
+				       (11, 'DXB11' , '2025-01-10 10:15', '2025-01-10 11:45')
+
+Insert into Airplane_Type(type_no, airport_code, typeName, company, max_seats)
+                  VALUES ( 1 , 'AUH12' , 'A320', 'Airbus', 350),
+				         ( 2, 'MCT01' , 'B737', 'Boeing', 260)
+
+Insert into Airplane (type_no, total_no_seats)
+              VALUES (1, 350),
+                     ( 2, 260)
+
+Insert into Leg_Instance (leg_id, leg_no, airplane_id, leg_Date, arrival_time, departure_time, no_available_seats)
+                  VALUES (1121, 6  , 100 , '2025-01-10', '09:05:00', '08:05:00', 50),
+				         (2221, 7 , 102 , '2025-01-10', '09:05:00', '08:05:00', 80)
+
+Insert into Fare (flight_no, code, amount)
+          VALUES (10, 'ECO', 120),
+                 (11, 'BUS', 300)
+
+Insert into Reservation (Custumar_id, leg_id,  Cus_Name, phone)
+                 VALUES ( 180 , 1121 ,'Ahmed Ali', 91234567),
+				        ( 881 , 2221 , 'Fatma Said', 99887766)
+
+--DQL 
+--1. Display all flight leg records.
+select * from Flight
+
+--2. Display each flight leg ID, scheduled departure time, and arrival time.
+select leg_no, Schedulaed_dep_time, Schedulaed_arr_time 
+   FROM Flight_Leg
+
+--3. Display each airplane’s ID, type, and seat capacity    
+select Airplane_id,Type_no ,Total_no_seats 
+   FROM Airplane 
+
+--4.Display each flight leg’s ID and available seats as AvailableSeats
+select  leg_id, No_available_seats AS AvailableSeats 
+   FROM leg_instance
+
+--5. List flight leg IDs with available seats greater than 30
+select leg_id
+    FROM leg_instance
+    WHERE No_available_seats > 30
+
+--6. List airplane IDs with seat capacity above 300
+select Airplane_id
+   FROM Airplane
+   WHERE Total_no_seats > 300
+
+--7. Display airport codes and names where city = 'Muscat'
+select Airport_code , A_name 
+   FROM Airport 
+   WHERE city = 'Muscat'
+
+--8. Display flight legs scheduled on 2025-06-10
+select * FROM Flight_leg
+    WHERE CAST(Schedulaed_dep_time AS DATE) = '2025-06-10'
+
+--9. Display flight legs ordered by departure time
+select  * FROM Flight_leg 
+   order by Schedulaed_dep_time
+
+--10. Display the maximum, minimum, and average available seats
+select MAX(No_available_seats) AS MaxSeats,
+       MIN(No_available_seats) AS MinSeats,
+	   AVG(No_available_seats) AS AvgSeats
+   FROM leg_instance
+
+--11. Display total number of flight legs
+select COUNT(*) AS TotalFlightLegs
+   FROM Flight_Leg
+
+--12. Display airplanes whose type contains 'Boeing'
+
+
+--DML
+--14. Insert a customer with NULL contact number
+INSERT INTO Reservation (Custumar_id, leg_id, Cus_Name, phone)
+                 VALUES (999, 1121, 'Ali Hassan', NULL)
+
+--15. Reduce available seats of your inserted flight leg by 5
+UPDATE leg_instance
+    SET No_available_seats = No_available_seats - 5
+    WHERE leg_id = 1121
+
+--16. Increase available seats by 10 for all domestic flights
+UPDATE leg_instance
+    SET No_available_seats = No_available_seats + 10
+
+--17. Update airplane seat capacity by +20 where capacity < 150
+UPDATE Airplane
+   SET Total_no_seats = Total_no_seats + 20
+   WHERE Total_no_seats < 150
+
+--18. Delete canceled flight legs
+DELETE FROM leg_instance
+   WHERE No_available_seats = 0
+
+
