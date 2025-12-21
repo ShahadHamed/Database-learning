@@ -310,5 +310,98 @@ DELETE FROM Student
     WHERE current_status = 'Inactive';
 
 
+-- JOIN Queries
 
+select * from Student 
+select * from Faculty
+select * from Fac_student
+select * from Hostel
+select * from Couese 
+select * from Stud_course
+select * from Subjects
+select * from Stud_subject
+select * from Exams
+select * from Stud_exams
+select * from Department
+select * from Dep_course
+
+--1. Display the department ID, name, and the full name of the faculty managing it.
+select Department_id, D_name, FName AS Faculty_Name
+from Department Inner join Faculty
+on Department = D_name
+
+--2. Display each program's name and the name of the department offering it.
+select c.Course_name, d.D_name AS Department_Name
+from Couese c Inner join Dep_course dc
+  on c.Course_id = dc.Course_id
+Inner join Department d
+  on dc.Department_id = d.Department_id
+
+--3. Display the full student data and the full name of their faculty advisor.
+select s.*, f.FName AS Advisor_Name
+from Student s Inner join Fac_student fs
+  on s.S_id = fs.S_id
+Inner join Faculty f
+  on fs.F_id = f.F_id
+
+--4. Display class(Exam) IDs, course titles, and room locations for classes in buildings 'A' or 'L'.
+select e.Exam_code, c.Course_name, e.Room
+from Exams e Inner join Department d
+  on e.Department_id = d.Department_id
+ Inner join Dep_course dc
+  on d.Department_id = dc.Department_id
+ Inner join Couese c
+  on dc.Course_id = c.Course_id
+where e.Room LIKE 'A%' OR e.Room LIKE 'L%'
+
+--5. Display full data about courses whose titles start with "I" (e.g., "Introduction to...").
+select * from Couese
+where Course_name LIKE 'D%'
+
+--6. Display names of students in program(Department) ID 3 whose GPA is between 2.5 and 3.5.
+select F_name+' '+ L_name AS Student_Name, GPA
+from Student 
+where Department_id = 3 AND GPA BETWEEN 2.5 AND 3.5
+
+--7. Retrieve student names in the Engineering program who earned grades ≥ 90 in the "Database" course.
+ 
+--8. Find names of students who are advised by "Dr. Ahmed Hassan".
+select s.F_name + ' ' + s.L_name AS Student_Name
+from Student s Inner join Fac_student fs
+  on s.S_id = fs.S_id
+ Inner join Faculty f
+  on fs.F_id = f.F_id
+where f.FName = 'Ahmed Ali'
+
+--9. Retrieve each student's name and the titles of courses they are enrolled in, ordered by course title.
+select s.F_name + ' ' + s.L_name AS Student_Name, C.Course_name
+from Student S Inner join Stud_course SC
+on S.S_id = SC.S_id
+Inner join Couese C
+on SC.Course_id = C.Course_id
+Order by c.Course_name
+
+--10. For each class in Building 'Main', retrieve class ID, course name, department name, and faculty name teaching the class.
+select e.Exam_code, c.Course_name, d.D_name AS Department_Name, f.FName AS Faculty_Name
+from Exams e Inner join Department d
+  ON e.Department_id = d.Department_id
+Inner join Dep_course dc
+  ON d.Department_id = dc.Department_id
+Inner join Couese c
+  ON dc.Course_id = c.Course_id
+Inner join Faculty f
+  ON f.Department = d.D_name
+where e.Room LIKE 'A%'
+
+--11. Display all faculty members who manage any department.
+select Faculty.* 
+from Faculty Inner join Department
+ON Department = D_name
+
+--12. Display all students and their advisors' names, even if some students don’t have advisors yet.
+select s.F_name + ' ' + s.L_name AS Student_Name, f.FName AS Advisor_Name
+from Student s LEFT JOIN Fac_student fs
+  ON s.S_id = fs.S_id
+LEFT JOIN Faculty f
+  ON fs.F_id = f.F_id
 
