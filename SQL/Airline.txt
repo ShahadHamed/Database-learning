@@ -198,3 +198,94 @@ DELETE FROM leg_instance
    WHERE No_available_seats = 0
 
 
+-- JOIN Queries
+select * from Airport
+select * from Flight
+select * from Fare
+select * from Flight_leg
+select * from Airplane_type 
+select * from Airplane
+select * from leg_instance
+select * from Reservation
+
+--1. Display each flight leg's ID, schedule, and the name of the airplane assigned to it. 
+select LI.leg_id, FL.schedulaed_dep_time, FL.schedulaed_arr_time, AT.TypeName
+from leg_instance LI Inner join Flight_leg FL
+on LI.leg_no=FL.leg_no
+Inner join Airplane A
+on A.Airplane_id=LI.Airplane_id
+Inner join Airplane_type AT
+on AT.Type_no=A.Type_no
+
+--2. Display all flight numbers and the names of the departure and arrival airports. 
+select F.Flight_no, A.A_name
+from Flight F Inner join Flight_leg FL
+on F.Flight_no=FL.Flight_no
+Inner join Airport A
+on A.Airport_code= FL.Airport_code
+
+--3. Display all reservation data with the name and phone of the customer who made each booking. 
+select R.Custumar_id, R.Cus_Name, R.Phone, R.leg_id
+from reservation R Inner join  leg_instance li 
+on R.leg_id = LI.leg_id
+ 
+--4. Display IDs and locations of flights departing from 'MCT'. 
+select FL.Flight_no , A.States+' '+A.city AS locations
+from Flight_leg FL Inner join Airport A
+on FL.Airport_code=A.Airport_code
+where A.Airport_code='MCT01'
+
+--5. Display full data of flights whose names start with 'O'. 
+select * from Flight
+where airline like 'O%'
+
+--6. List customers who have bookings with total payment between 150 and 500. 
+select R.Cus_Name, F.Amount AS Total_Payment
+from Reservation R Inner join leg_instance LI
+on R.leg_id=LI.leg_id
+Inner join Flight_leg FL
+on FL.leg_no=LI.leg_no
+Inner join Fare F
+on F.Flight_no=FL.Flight_no
+where F.Amount between 150 AND 500
+
+--7. Retrieve all passengers on 'Flight 10' who booked more than 2 seats. 
+select R.Custumar_id AS PassengerID, R.Cus_Name AS Passenger, F.Flight_no, LI.No_available_seats
+from Reservation R Inner join  leg_instance LI
+on R.leg_id=LI.leg_id
+Inner join Flight_leg FL
+on FL.leg_no=LI.leg_no
+Inner join Flight F
+on F.Flight_no=FL.Flight_no
+where F.Flight_no=10
+
+--8. Find names of passengers whose booking was handled by agent "Youssef Hamed". 
+
+--9. Display each passenger’s name and the flights they booked, ordered by flight date. 
+select  R.Cus_Name AS PassengerName , F.Flight_no, LI.leg_Date AS Flight_date
+from Reservation R Inner join leg_instance LI
+on R.leg_id=LI.leg_id
+Inner join Flight_leg FL
+on FL.leg_no=LI.leg_no
+Inner join Flight F
+on F.Flight_no=FL.Flight_no
+order by LI.leg_date
+
+--10. For each flight departing from 'Muscat', display the flight number, departure time, and airline name. 
+select F.Flight_no, FL.Schedulaed_dep_time, F.Airline
+from flight F Inner join flight_leg FL 
+on F.flight_no =FL.flight_no
+inner join airport A 
+on FL.airport_code = A.airport_code
+where A.city = 'Muscat'
+
+--11. Display all staff members who are assigned as supervisors for flights. 
+--no stuff
+
+-- 12. Display all bookings and their related passengers, even if some bookings are unpaid. 
+select LI.Leg_id, R.Custumar_id, R.Cus_name, R.Phone
+from leg_instance LI left join Reservation R 
+on LI.leg_id = R.leg_id
+
+
+
