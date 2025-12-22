@@ -217,3 +217,92 @@ UPDATE books
   WHERE price < 20
 
 
+--JOIN Queries 
+SELECT * FROM members
+SELECT * FROM libraryMS
+SELECT * FROM staff
+SELECT * FROM books
+SELECT * FROM loan
+SELECT * FROM review
+SELECT * FROM payment
+
+--1. Display library ID, name, and the name of the manager. 
+select L.l_id As library_ID , L.l_name AS library_name,S.s_name, S.position 
+from libraryMS L Inner join staff S
+on L.l_id=S.l_id
+where S.position='Manager'
+
+--2. Display library names and the books available in each one.
+select l.l_name, b.b_title
+from libraryms l Inner join books b
+on l.l_id = b.l_id
+where b.availability_status = 'true'
+
+--3. Display all member data along with their loan history. 
+select m.* , l.loan_id, l.loan_date, l.due_date, l.statuss
+from members m inner join loan l
+on m.m_id = l.m_id
+
+--4. Display all books located in 'Zamalek' or 'Downtown'. 
+select b.b_title, b.shelf_location
+from books b
+where b.shelf_location in ('shelf d4')
+
+--5. Display all books whose titles start with 'T'. 
+select * from books
+where b_title like 't%'
+
+--6. List members who borrowed books priced between 100 and 300 LE. 
+select m.full_name, b.price
+from members m inner join loan l
+on m.m_id = l.m_id
+inner join books b
+on l.b_id = b.b_id
+where b.price between 20 and 30
+
+--7. Retrieve members who borrowed and returned books titled 'The Alchemist'. 
+select m.full_name
+from members m inner join loan l
+on m.m_id = l.m_id
+inner join books b
+on l.b_id = b.b_id
+where b.b_title = 'world history' and l.statuss = 'returned'
+
+--8. Find all members assisted by librarian "Sarah Fathy". 
+select m.full_name
+from members m inner join loan l
+on m.m_id = l.m_id
+inner join books b
+on l.b_id = b.b_id
+inner join staff s
+on b.l_id = s.l_id
+where s.s_name = 'ali al-shukri'
+and s.position = 'librarian'
+
+--9. Display each member’s name and the books they borrowed, ordered by book title. 
+select m.full_name, b.b_title
+from members m inner join loan l
+on m.m_id = l.m_id
+inner join books b
+on l.b_id = b.b_id
+order by b.b_title
+
+--10. For each book located in 'Cairo Branch', show title, library name, manager, and shelf info. 
+select b.b_title, l.l_name, s.s_name as manager_name, b.shelf_location
+from books b inner join libraryms l
+on b.l_id = l.l_id
+inner join staff s
+on l.l_id = s.l_id
+where l.l_location = 'muscat, oman'
+and s.position = 'manager'
+
+--11. Display all staff members who manage libraries. 
+select s.staff_id, s.s_name, l.l_name
+from staff s inner join libraryms l
+on s.l_id = l.l_id
+where s.position = 'manager'
+
+--12. Display all members and their reviews, even if some didn’t submit any review yet.
+select m.m_id, m.full_name, r.rating, r.comments
+from members m left join review r
+on m.m_id = r.m_id
