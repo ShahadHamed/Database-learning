@@ -189,3 +189,99 @@ update account
 -- 18. Delete closed accounts (assuming closed accounts have balance = 0)
 delete from account
   where balance = 0
+
+
+ --JOIN Queries 
+
+select * from branches
+select * from employees
+select * from customers
+select * from emp_cust
+select * from loans
+select * from account
+select * from transactions
+
+--1. Display branch ID, name, and the name of the employee who manages it. 
+select b.branch_id, b.b_address, e.e_name AS manager_name
+from branches b inner join employees e 
+on b.branch_id = e.branch_id
+where e.position = 'manager'
+
+--2. Display branch names and the accounts opened under each. 
+select b.branch_id, b.b_address, a.account_no
+from branches b inner join employees e 
+on b.branch_id = e.branch_id
+inner join emp_cust ec 
+on e.e_id = ec.e_id
+inner join account a 
+on ec.c_id = a.c_id
+
+--3. Display full customer details along with their loans. 
+select c.*, l.l_id as loan_id, l.l_type as loan_type
+from customers c inner join loans l
+on c.c_id = l.c_id
+
+--4. Display loan records where the loan office is in 'Alexandria' or 'Giza'.
+select l.l_id, l.l_type,l.amount, b.b_address as branch_address
+from loans l inner join employees e 
+on l.e_id = e.e_id
+inner join branches b 
+on e.branch_id = b.branch_id
+where b.b_address in ('muscat main street')
+
+--5. Display account data where the type starts with "S" (e.g., "Savings"). 
+select * from account
+where account_type like 's%'
+
+--6. List customers with accounts having balances between 4000 and 10,000. 
+select c.c_name, a.balance
+from customers c inner join account a 
+on c.c_id = a.c_id
+where a.balance between 4000 and 10000
+
+--7. Retrieve customer names who borrowed more than 1000 LE from 'muscat main street'. 
+select c.c_name
+from customers c inner join loans l 
+on c.c_id = l.c_id
+inner join employees e 
+on l.e_id = e.e_id
+inner join branches b 
+on e.branch_id = b.branch_id
+where l.amount > 1000 and b.b_address = 'muscat main street'
+
+--8. Find all customers assisted by employee "Amira Khaled". 
+select c.c_name
+from customers c inner join emp_cust ec 
+on c.c_id = ec.c_id
+inner join employees e 
+on ec.e_id = e.e_id
+where e.e_name = 'Fatma Al lawati'
+
+--9. Display each customer’s name and the accounts they hold, sorted by account type. 
+select c.c_name, a.account_no, a.account_type
+from customers c inner join account a 
+on c.c_id = a.c_id
+order by a.account_type
+
+--10. For each loan issued in Cairo, show loan ID, customer name, employee handling it, and branch name. 
+select l.l_id, c.c_name, e.e_name, b.b_address
+from loans l inner join customers c 
+on l.c_id = c.c_id
+inner join employees e 
+on l.e_id = e.e_id
+inner join branches b 
+on e.branch_id = b.branch_id
+where b.b_address = 'sohar city center'
+
+--11. Display all employees who manage any branch. 
+select e.e_id, e.e_name, b.branch_id
+from employees e inner join branches b 
+on e.branch_id = b.branch_id
+where e.position = 'manager'
+
+--12. Display all customers and their transactions, even if some customers have no transactions yet.
+select c.c_id, c.c_name, t.transaction_id, t.amount, t.transaction_type
+from customers c left join account a 
+on c.c_id = a.c_id
+left join transactions t 
+on a.account_no = t.account_no
