@@ -1,0 +1,131 @@
+create database BankingSystem_v
+use BankingSystem_v
+
+CREATE TABLE Customer (
+CustomerID INT PRIMARY KEY,
+FullName NVARCHAR(100),
+Email NVARCHAR(100),
+Phone NVARCHAR(15),
+SSN CHAR(9)
+)
+
+CREATE TABLE Account (
+AccountID INT PRIMARY KEY,
+CustomerID INT FOREIGN KEY REFERENCES Customer(CustomerID),
+Balance DECIMAL(10, 2),
+AccountType VARCHAR(50),
+Status VARCHAR(20)
+)
+
+CREATE TABLE Transactions (
+TransactionID INT PRIMARY KEY,
+AccountID INT FOREIGN KEY REFERENCES Account(AccountID),
+Amount DECIMAL(10, 2),
+Type VARCHAR(10), -- Deposit, Withdraw
+TransactionDate DATETIME
+)
+
+CREATE TABLE Loan (
+LoanID INT PRIMARY KEY,
+CustomerID INT FOREIGN KEY REFERENCES Customer(CustomerID),
+LoanAmount DECIMAL(12, 2),
+LoanType VARCHAR(50),
+Status VARCHAR(20)
+)
+
+
+INSERT INTO Customer (CustomerID, FullName, Email, Phone, SSN)
+              VALUES (1, 'Ahmed Salim Al Rashdi', 'ahmed.rashdi@gmail.com', '91234567', '100000001'),
+                     (2, 'Mohammed Khalid Al Harthy', 'mohammed.harthy@gmail.com', '92345678', '100000002'),
+                     (3, 'Saeed Nasser Al Balushi', 'saeed.balushi@gmail.com', '93456789', '100000003'),
+                     (4, 'Khalid Ali Al Lawati', 'khalid.lawati@gmail.com', '94567890', '100000004'),
+                     (5, 'Yusuf Hamad Al Zadjali', 'yusuf.zadjali@gmail.com', '95678901', '100000005')
+
+
+INSERT INTO Account (AccountID, CustomerID, Balance, AccountType, Status)
+             VALUES (101, 1, 3200.00, 'Salary', 'Active'),
+                    (102, 2, 2800.00, 'Salary', 'Active'),
+                    (103, 3, 4100.00, 'Savings', 'Active'),
+                    (104, 4, 1500.00, 'Checking', 'Active'),
+                    (105, 5, 5000.00, 'Salary', 'Active')
+
+
+INSERT INTO Transactions (TransactionID, AccountID, Amount, Type, TransactionDate)
+                  VALUES (2001, 101, 1200.00, 'Deposit',  DATEADD(DAY, -2,  GETDATE())),
+                         (2002, 102, 300.00,  'Withdraw', DATEADD(DAY, -5,  GETDATE())),
+                         (2003, 103, 1500.00, 'Deposit',  DATEADD(DAY, -10, GETDATE())),
+                         (2004, 104, 200.00,  'Withdraw', DATEADD(DAY, -20, GETDATE())),
+                         (2005, 105, 2500.00, 'Deposit',  DATEADD(DAY, -35, GETDATE()))
+
+						 delete from Transactions
+
+INSERT INTO Loan (LoanID, CustomerID, LoanAmount, LoanType, Status)
+          VALUES (501, 1, 10000.00, 'Car Loan', 'Approved'),
+                 (502, 2, 5000.00, 'Personal Loan', 'Pending'),
+                 (503, 3, 25000.00, 'Home Loan', 'Approved'),
+                 (504, 4, 8000.00, 'Education Loan', 'Approved'),
+                 (505, 5, 12000.00, 'Business Loan', 'Pending')
+
+				 
+-- see finals tables
+SELECT * FROM Customer
+SELECT * FROM Account
+SELECT * FROM Transactions
+SELECT * FROM Loan
+
+
+
+--View Creation Scenarios:
+
+--=====================================================
+-- 1. Customer Service View
+-- Shows: Customer Name, Phone, Account Status
+-- Hides: SSN, Balance
+--=====================================================
+create view VCustomerService
+AS
+select  c.FullName, c.Phone, a.Status AS AccountStatus
+From Customer c Inner join Account a
+on c.CustomerID=a.CustomerID
+
+select * from VCustomerService
+
+
+--=====================================================
+-- 2. Finance Department View
+-- Shows: Account ID, Balance, Account Type
+--=====================================================
+create view VFinanceDep
+AS 
+select AccountID, Balance, AccountType
+from Account
+
+select * from VFinanceDep
+
+
+--=====================================================
+-- 3. Loan Officer View
+-- Shows: Loan details + CustomerID only
+-- Hides: Customer name, phone, SSN
+--=====================================================
+create view VLoanOfficer
+AS
+select * from loan
+
+
+select * from VLoanOfficer
+
+
+-- =====================================
+-- 4. Transaction Summary View
+-- Shows: Last 30 days transactions only
+-- Fields: AccountID, Amount, TransactionDate
+-- =====================================
+create view VTransaction
+AS 
+select AccountID, Amount, TransactionDate
+from Transactions
+where TransactionDate >= DATEADD(DAY, -30, GETDATE())
+
+
+select * from VTransaction
