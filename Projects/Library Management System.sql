@@ -92,44 +92,105 @@ create table payment (
 
 Insert into libraryMS (l_name, contact_number, l_location, established_year)
                VALUES ('Muscat central library', '24666454', 'Muscat, oman', 2020),
-                      ('Sohar city library', '26669191', 'Sohar, oman', 2014)
+                      ('Sohar city library', '26669191', 'Sohar, oman', 2014),
+					  ('Salalah Public Library', '23234567', 'Salalah, Oman', 2018)
+delete from payment
 
 Insert into members (Full_name, MSD, email, phone_number)
              VALUES ('Mohammed Al-Hosni', '2016-05-10', 'mohammed.alhosni@gmail.com', '99661101'),
                     ('Fatima Al-Arthy', '2020-07-22', 'fatima112@icloud.com', '78778741'),
                     ('Ali Al-Saadi', '2025-03-15', 'ali.saif@gmail.com', '92558747'),
                     ('Layla Al-Zaabi', '2022-09-05', 'layla.alzaabi@gmail.com', '90014158'),
-                    ('Ahmed Al-Mansoori', '2017-11-30', 'ahmed.almansoori@icloud.com', '77474158')
-
+                    ('Ahmed Al-Mansoori', '2017-11-30', 'ahmed.almansoori@icloud.com', '77474158'),
+					('Salim Al-Hinai', '2021-01-18', 'salim@gmail.com', '91234567'),
+                    ('Aisha Al-Rashdi', '2023-02-20', 'aisha@gmail.com', '99887766'),
+                    ('Khalid Al-Balushi', '2018-06-12', 'khalid@gmail.com', '91122334'),
+                    ('Noor Al-Harthy', '2024-04-09', 'noor@gmail.com', '93334455'),
+                    ('Yousef Al-Kindi', '2015-12-01', 'yousef@gmail.com', '95556677')
 
 Insert into staff (l_id, s_name, position, phone_number)
-           VALUES (1, 'Mohammed al-hadhrami', 'Manager', '90011454'),
-                  (1, 'Fatima al-busaidi', 'Assistant', '74758587'),
-                  (2, 'Ali al-shukri', 'Librarian', '91222515')
+           VALUES (5,'Mohammed Al-Hosni','Manager','9978795'),
+                  (5,'Fatima Al-Busaidi','Assistant','90011112'),
+                  (5,'Salem Al-Rawahi','Librarian','99663696'),
+                  (4,'Ali Al-Shukri','Manager','90121214'),
+                  (4,'Aisha Al-Harthy','Librarian','98787858'),
+                  (4,'Khalid Al-Balushi','Assistant','96325874'),
+                  (3,'Nasser Al-Hinai','Manager','74141475'),
+                  (3,'Maryam Al-Siyabi','Librarian','98585874'),
+                  (3,'Hamad Al-Yahyai','Assistant','95884787'),
+                  (3,'Noor Al-Rashdi','Clerk','77787548')
 
 
 Insert into books (l_id, b_title, genre, ISBN, availability_status, price, shelf_location)
-           VALUES (1, 'the great adventure', 'fiction', 'isbn001', 'true', 19.99, 'shelf a1'),
-                  (1, 'world history', 'non-fiction', 'isbn002', 'true', 29.50, 'shelf b2'),
-                  (2, 'children stories', 'children', 'isbn003', 'true', 15.00, 'shelf c3'),
-                  (2, 'reference manual', 'reference', 'isbn004', 'true', 45.00, 'shelf d4')
+           VALUES (3,'The Great Adventure','Fiction','ISBN101','true',18.00,'A1'),
+                  (3,'World History','Non-fiction','ISBN102','true',30.00,'A2'),
+                  (3,'Modern Science','Reference','ISBN103','false',45.00,'A3'),
+                  (3,'Kids Stories','Children','ISBN104','true',15.00,'A4'),
+                  (3,'Mystery House','Fiction','ISBN105','false',22.00,'A5'),
+                  (4,'Business Basics','Non-fiction','ISBN106','true',28.00,'B1'),
+                  (4,'Math Guide','Reference','ISBN107','false',40.00,'B2'),
+                  (4,'Fairy Tales','Children','ISBN108','true',12.00,'B3'),
+                  (4,'History of Oman','Non-fiction','ISBN109','true',35.00,'B4'),
+                  (4,'Fantasy Land','Fiction','ISBN110','false',25.00,'B5'),
+                  (4,'Health & Life','Non-fiction','ISBN111','true',20.00,'C1'),
+                  (4,'Physics 101','Reference','ISBN112','false',50.00,'C2'),
+                  (4,'Bedtime Stories','Children','ISBN113','true',14.00,'C3'),
+                  (4,'The Lost City','Fiction','ISBN114','false',27.00,'C4'),
+                  (4,'Programming SQL','Reference','ISBN115','true',60.00,'C5'),
+                  (5,'Poetry Nights','Fiction','ISBN116','true',16.00,'A6'),
+                  (5,'Ancient Civilizations','Non-fiction','ISBN117','true',38.00,'B6'),
+                  (5,'Creative Writing','Fiction','ISBN118','true',21.00,'C6'),
+                  (5,'Junior Encyclopedia','Children','ISBN119','true',19.00,'A7'),
+                  (5,'Data Science Intro','Reference','ISBN120','false',55.00,'B7')
 
 
 Insert into loan (b_id, m_id, loan_date, due_date, return_date, statuss)
-          VALUES (110, 200, '2025-12-01', '2025-12-15', NULL, 'issued'),
-                 (111, 201, '2025-11-20', '2025-12-04', '2025-12-02', 'returned'),
-                 (112, 202, '2025-12-05', '2025-12-19', NULL, 'issued')
+          VALUES (115,208,'2025-11-01','2025-11-15',NULL,'Issued'),
+                 (116,209,'2025-11-02','2025-11-16',NULL,'Overdue'),
+                 (117,210,'2025-11-03','2025-11-17','2025-11-15','Returned'),
+                 (118,211,'2025-11-04','2025-11-18',NULL,'Issued'),
+                 (119,212,'2025-11-05','2025-11-19',NULL,'Overdue'),
+                 (120,213,'2025-11-06','2025-11-20','2025-11-18','Returned'),
+                 (121,214,'2025-11-07','2025-11-21',NULL,'Issued'),
+                 (122,215,'2025-11-08','2025-11-22',NULL,'Overdue'),
+                 (123,216,'2025-11-09','2025-11-23','2025-11-22','Returned'),
+                 (124,217,'2025-11-10','2025-11-24',NULL,'Issued'),
+                 (125,208,'2025-11-11','2025-11-25',NULL,'Issued'),
+                 (126,209,'2025-11-12','2025-11-26','2025-11-24','Returned'),
+                 (127,210,'2025-11-13','2025-11-27',NULL,'Overdue'),
+                 (128,211,'2025-11-14','2025-11-28',NULL,'Issued'),
+                 (129,212,'2025-11-15','2025-11-29','2025-11-28','Returned')
 
 
 Insert into review (b_id, m_id, rating, comments, review_date)
-            VALUES (110, 200, 5, 'amazing book!', '2025-12-10'),
-                   (111, 201, 4, 'very informative.', '2025-12-11'),
-                   (112, 202, 3, 'good for kids.', '2025-12-12')
+            VALUES (115,208,5,'Excellent book','2025-11-20'),
+                   (116,209,4,'Very useful','2025-11-21'),
+                   (117,210,3,'Good but long','2025-11-22'),
+                   (118,211,5,'Loved it','2025-11-23'),
+                   (119,212,2,'Not very clear','2025-11-24'),
+                   (120,213,4,'Well written','2025-11-25'),
+                   (121,214,5,'Highly recommended','2025-11-26'),
+                   (122,215,3,'Average content','2025-11-27'),
+                   (123,216,4,'Helpful reference','2025-11-28'),
+                   (124,217,5,'Amazing read','2025-11-29')
 
 
 Insert into payment (loan_id, payment_date, amount, method)
-             VALUES (2, '2025-12-03', 29.50, 'credit card'),
-                    (3, '2025-12-10', 19.99, 'cash')
+             VALUES (6,  '2025-11-20', 5.00, 'Cash'),
+                    (7,  '2025-11-21', 6.50, 'Credit Card'),
+                    (8,  '2025-11-22', 4.00, 'Cash'),
+                    (9,  '2025-11-23', 7.25, 'Debit Card'),
+                    (10, '2025-11-24', 8.00, 'Credit Card'),
+                    (11, '2025-11-25', 5.75, 'Cash'),
+                    (12, '2025-11-26', 6.00, 'Debit Card'),
+                    (13, '2025-11-27', 9.50, 'Credit Card'),
+                    (14, '2025-11-28', 4.25, 'Cash'),
+                    (15, '2025-11-29', 7.00, 'Debit Card'),
+                    (16, '2025-11-30', 6.80, 'Credit Card'),
+                    (17, '2025-12-01', 5.40, 'Cash'),
+                    (18, '2025-12-02', 8.90, 'Debit Card'),
+                    (19, '2025-12-03', 4.60, 'Cash'),
+                    (20, '2025-12-04', 7.75, 'Credit Card')
 
 
 -- See final tables with data
@@ -196,7 +257,7 @@ Insert into members (Full_name, MSD, email, phone_number)
 
 --Register yourself to borrow book ID 1011		 
 Insert into loan (b_id, m_id, loan_date, due_date, return_date, statuss)
-          VALUES (112, 205, '2025-12-15', '2025-12-17', NULL, 'issued')
+          VALUES (119, 218, '2025-12-15', '2025-12-17', NULL, 'issued')
 
 --Insert another member with NULL email and phone
 alter table members
@@ -209,7 +270,7 @@ Insert into members (Full_name, MSD, email, phone_number)
 UPDATE loan
 SET return_date = GETDATE(),
     statuss = 'returned'
-    WHERE m_id = 205
+    WHERE m_id = 218
 
 --Increase book prices by 5% for books priced under 20
 UPDATE books
@@ -306,3 +367,6 @@ where s.position = 'manager'
 select m.m_id, m.full_name, r.rating, r.comments
 from members m left join review r
 on m.m_id = r.m_id
+
+
+
